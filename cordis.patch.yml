@@ -1,0 +1,10 @@
+# dsh-plugin-education — bundle patch layer.
+# Composes over an EMPTY entry list, so every patch here is an `insert`
+# appending composition rows. This row registers the `edu_kit` model tool
+# and the education prompt-guidance section host-wide.
+- insert:
+    - id: education
+      name: 'dsh-plugin-education'
+      config:
+        personaSection: true
+        sectionOrder: 6

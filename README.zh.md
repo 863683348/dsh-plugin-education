@@ -18,7 +18,9 @@ dsh plugin --profile <profile> add dsh-plugin-education
 | `quiz` | 校验测验题 —— 题干、≥2 个不重复选项、答案索引越界、解析为空 |
 | `rubric` | 分析式评分量规表（维度 × 等级） |
 | `flashcard` | Q/A 对转 Anki TSV 或 markdown 卡片 |
-| `level` | 可读性分级 —— 英文用 Flesch，中文用句长启发式 |
+| `level` | 可读性 — 英文 Flesch，中文 CJK 长度启发式 |
+| `grade` | 批改评分卡（得分/满分/百分比/等级/是否通过） |
+| `studyplan` | 学习计划（起止日期 + 课时 → 周计划表）
 
 ## 配置
 

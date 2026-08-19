@@ -19,6 +19,8 @@ Restart DSH. The `edu_kit` tool is registered host-wide.
 | `rubric` | Analytic rubric table from criteria × levels |
 | `flashcard` | Convert Q/A pairs to Anki TSV or markdown |
 | `level` | Readability — Flesch for English, CJK length heuristics for Chinese |
+| `grade` | Grading sheet from scored items — totals, percentage, letter grade, pass/fail |
+| `studyplan` | Weekly study plan from a date range and topic hour budgets |
 
 ## Config
 
@@ -36,3 +38,8 @@ Pure logic (`lib/education.js`) has zero DSH/Cordis imports and is unit-tested i
 ## License
 
 MIT
+
+
+## Roadmap
+
+See [ROADMAP.md](./ROADMAP.md) — next five versions (v0.2.0 – v0.6.0): grading & study plans, question scaffolding & class stats, lesson variants & activities, standards alignment & reports, paper assembly & learning paths.

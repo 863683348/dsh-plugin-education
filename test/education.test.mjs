@@ -1,7 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  buildGradeSheet,
   buildRubric,
+  buildStudyPlan,
   lessonPlan,
   readability,
   toFlashcards,
@@ -72,4 +74,62 @@ test("readability CJK heuristics", () => {
   const res = readability({ text: "这是一个很长的句子，用来测试可读性。它包含多个分句。", lang: "zh" });
   assert.ok(res.metrics.sentences >= 2);
   assert.ok(["light", "moderate", "dense"].includes(res.label));
+});
+
+
+test("buildGradeSheet computes totals and letter grade", () => {
+  const sheet = buildGradeSheet({
+    items: [
+      { name: "Q1", score: 8, max: 10, comment: "good" },
+      { name: "Q2", score: 5, max: 10 },
+      { name: "Essay", score: 30, max: 40 },
+    ],
+  });
+  assert.equal(sheet.totalScore, 43);
+  assert.equal(sheet.totalMax, 60);
+  assert.ok(sheet.totalPct > 70);
+  assert.equal(sheet.grade, "C");
+  assert.equal(sheet.pass, true);
+  assert.ok(sheet.text.includes("| **Total** | | **43** | 60 |"));
+});
+
+test("buildGradeSheet fails below pass threshold", () => {
+  const sheet = buildGradeSheet({ items: [{ name: "Q1", score: 1, max: 10 }], passPct: 60 });
+  assert.equal(sheet.pass, false);
+  assert.equal(sheet.grade, "F");
+  assert.ok(sheet.text.includes("FAIL"));
+});
+
+test("buildGradeSheet rejects bad input", () => {
+  assert.throws(() => buildGradeSheet({ items: [] }));
+  assert.throws(() => buildGradeSheet({ items: [{ name: "x", score: -1, max: 10 }] }));
+  assert.throws(() => buildGradeSheet({ items: [{ name: "x", score: 1, max: 0 }] }));
+});
+
+test("buildStudyPlan builds weekly rows within the date range", () => {
+  const plan = buildStudyPlan({
+    start: "2026-09-01", end: "2026-09-21", hoursPerWeek: 10,
+    topics: [{ name: "Algebra", hours: 12 }, { name: "Geometry", hours: 12 }],
+  });
+  assert.ok(plan.weeks >= 3, "at least 3 weeks");
+  assert.ok(plan.rows.length <= 3);
+  assert.equal(plan.totalHours, 24);
+  assert.ok(plan.text.startsWith("# Study plan"));
+  const hoursSum = plan.rows.reduce((s, r) => s + r.hours, 0);
+  assert.equal(hoursSum, 24);
+});
+
+test("buildStudyPlan handles zero-hour topics without looping", () => {
+  const plan = buildStudyPlan({
+    start: "2026-09-01", end: "2026-09-07", hoursPerWeek: 5,
+    topics: [{ name: "Optional", hours: 0 }],
+  });
+  assert.ok(plan.rows.length >= 1);
+  assert.equal(plan.totalHours, 0);
+});
+
+test("buildStudyPlan rejects bad dates and empty topics", () => {
+  assert.throws(() => buildStudyPlan({ start: "2026-01-01", end: "2025-01-01", topics: [{ name: "x", hours: 1 }] }));
+  assert.throws(() => buildStudyPlan({ start: "bad", end: "2026-01-01", topics: [{ name: "x", hours: 1 }] }));
+  assert.throws(() => buildStudyPlan({ start: "2026-01-01", end: "2026-01-08", topics: [] }));
 });
