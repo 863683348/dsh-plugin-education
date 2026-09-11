@@ -2,8 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   buildGradeSheet,
+  buildQuestions,
   buildRubric,
   buildStudyPlan,
+  classStats,
   lessonPlan,
   readability,
   toFlashcards,
@@ -132,4 +134,51 @@ test("buildStudyPlan rejects bad dates and empty topics", () => {
   assert.throws(() => buildStudyPlan({ start: "2026-01-01", end: "2025-01-01", topics: [{ name: "x", hours: 1 }] }));
   assert.throws(() => buildStudyPlan({ start: "bad", end: "2026-01-01", topics: [{ name: "x", hours: 1 }] }));
   assert.throws(() => buildStudyPlan({ start: "2026-01-01", end: "2026-01-08", topics: [] }));
+});
+
+
+test("buildQuestions scaffolds items across requested types", () => {
+  const q = buildQuestions({ topic: "分数", count: 4, types: ["single", "fill"], difficulty: "easy" });
+  assert.equal(q.count, 4);
+  assert.equal(q.items[0].type, "single");
+  assert.equal(q.items[1].type, "fill");
+  assert.ok(q.items[0].stem.includes("分数"));
+  assert.equal(q.items[0].level, "识记/理解");
+  assert.ok(q.text.startsWith("# 试题骨架"));
+});
+
+test("buildQuestions validates topic, types and difficulty", () => {
+  assert.throws(() => buildQuestions({ topic: "" }));
+  assert.throws(() => buildQuestions({ topic: "x", types: ["bogus"] }));
+  assert.throws(() => buildQuestions({ topic: "x", difficulty: "impossible" }));
+});
+
+test("buildQuestions caps count", () => {
+  const q = buildQuestions({ topic: "x", count: 999 });
+  assert.ok(q.count <= 50);
+});
+
+test("classStats computes mean, median and pass rate", () => {
+  const s = classStats({ scores: [95, 88, 72, 60, 45, 30], full: 100, passPct: 60 });
+  assert.equal(s.n, 6);
+  assert.equal(s.mean, 65);
+  assert.equal(s.median, 66);
+  assert.equal(s.max, 95);
+  assert.equal(s.min, 30);
+  assert.equal(s.passLine, 60);
+  assert.equal(s.passRate, 66.7);
+  assert.ok(s.stdev > 0);
+});
+
+test("classStats builds score bands covering all students", () => {
+  const s = classStats({ scores: [100, 80, 60, 40, 20, 0], full: 100, bands: 5 });
+  assert.equal(s.distribution.length, 5);
+  const total = s.distribution.reduce((a, b) => a + b.count, 0);
+  assert.equal(total, 6, "all students counted");
+});
+
+test("classStats rejects empty or invalid input", () => {
+  assert.throws(() => classStats({ scores: [] }));
+  assert.throws(() => classStats({ scores: ["a", "b"] }));
+  assert.throws(() => classStats({ scores: [1], full: 0 }));
 });

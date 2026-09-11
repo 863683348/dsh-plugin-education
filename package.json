@@ -1,7 +1,7 @@
 {
   "name": "dsh-plugin-education",
-  "version": "0.2.0",
-  "description": "Education toolkit for DeepSeek Harness agents: lesson-plan skeletons by grade band, quiz validation, analytic rubrics, grading sheets, study plans, flashcards, and text readability levels",
+  "version": "0.3.0",
+  "description": "Education toolkit for DeepSeek Harness agents: lesson-plan skeletons, quiz validation, question scaffolding, analytic rubrics, grading sheets, study plans, class statistics, flashcards and readability levels",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -32,7 +32,9 @@
     "flashcard",
     "rubric",
     "grading",
-    "study-plan"
+    "study-plan",
+    "assessment",
+    "class-stats"
   ],
   "license": "MIT",
   "dsh": {

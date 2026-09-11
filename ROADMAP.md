@@ -35,7 +35,7 @@
 - [ ] README（en/zh）更新
 - [ ] vertical-toolkits dump-config 正常
 
-## v0.3.0 — 命题与学情
+## v0.3.0 ✅ 已完成 — 命题与学情
 
 - `question`：按知识点 + 难度生成题干/选项/答案骨架（单选/多选/填空/简答），可导出题库 TSV
 - `classstats`：班级成绩统计（均值、中位数、分布、及格率、分数段柱状数据）

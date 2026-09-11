@@ -21,6 +21,8 @@ Restart DSH. The `edu_kit` tool is registered host-wide.
 | `level` | Readability — Flesch for English, CJK length heuristics for Chinese |
 | `grade` | Grading sheet from scored items — totals, percentage, letter grade, pass/fail |
 | `studyplan` | Weekly study plan from a date range and topic hour budgets |
+| `question` | Question skeletons by type (single/multiple/fill/short) and difficulty |
+| `classstats` | Class score statistics — mean, median, stdev, pass rate, score bands |
 
 ## Config
 
