@@ -1,6 +1,6 @@
 {
   "name": "dsh-plugin-education",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Education toolkit for DeepSeek Harness agents: lesson-plan skeletons, quiz validation, question scaffolding, analytic rubrics, grading sheets, study plans, class statistics, flashcards and readability levels",
   "type": "module",
   "main": "lib/index.js",

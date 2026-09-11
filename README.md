@@ -2,6 +2,10 @@
 
 An **education toolkit** for [DeepSeek Harness](https://github.com/deepseek-ai/dsh) agents: lesson-plan skeletons, quiz validation, rubrics, flashcards, and readability levels. The model authors the content; the plugin supplies structure and checks.
 
+## Compatibility
+
+Tool schemas are validated against the `@deepseek-ai/dsh-tools` value-schema DSL (compiled at plugin load). 0.3.1 fixes a schema violation that made the host abort the whole profile boot on DSH ≥ 0.1.0-rc.6 with `unsupported JSON schema: schema.required is not supported by the value schema DSL`. If you installed an affected version and your DSH no longer starts, upgrade to 0.3.1 (or remove the plugin from the profile) — no data is lost.
+
 ## Install
 
 ```bash
